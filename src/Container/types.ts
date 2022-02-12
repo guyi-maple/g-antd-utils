@@ -7,11 +7,11 @@ export interface ContainerBinding {
     order?: number
     component: string
     name: string
-    executor: (context: any) => any
+    executor: (context: any, setContext: (ctx: any) => void) => Promise<any>
 }
 
 export interface ActionFunction {
-    (componentNames: string[]): void
+    (componentNames: string[]): Promise<any>
 }
 
 export interface RegisterFunction {

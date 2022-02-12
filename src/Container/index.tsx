@@ -26,30 +26,43 @@ const Container = (props: ContainerProps) => {
         map[type].push(binding)
     }
 
-    const run = (ctx: any, binding: ContainerBinding, before: any, after: any) => {
+    const uploadContext = (ctx: any) => {
+        const temp = {...context}
+        Object.keys(ctx).forEach(key => {
+            // @ts-ignore
+            temp[key] = ctx[key]
+        })
+        setContext(temp)
+    }
+
+    const run = async (ctx: any, binding: ContainerBinding, before: any, after: any) => {
         let temp = {...ctx}
         if (before[binding.name]) {
             const bs = before[binding.name]
             for (let i = 0; i < bs.length; i++) {
-                temp = {...temp, ...run(temp, bs[i], before, after)}
+                const result = await run(temp, bs[i], before, after)
+                temp = {...temp, ...result}
             }
         }
 
-        temp = {...temp, ...(binding.executor(temp) || {})}
+
+        temp = {...temp, ...(await binding.executor(temp, uploadContext) || {})}
 
         if (after[binding.name]) {
             const as = after[binding.name]
             for (let i = 0; i < as.length; i++) {
-                temp = {...temp, ...run(temp, as[i], before, after)}
+                const result = await run(temp, as[i], before, after)
+                temp = {...temp, ...result}
             }
         }
 
         return temp
     }
 
-    const action = (componentNames: string[]) => {
+    const action = async (componentNames: string[]) => {
         let ctx = {...context}
-        componentNames.forEach(componentName => {
+        for (let i = 0; i < componentNames.length; i++) {
+            const componentName = componentNames[i]
             const binding = bindings.filter(binding => binding.component === componentName)
 
             const before = {}
@@ -65,10 +78,10 @@ const Container = (props: ContainerProps) => {
                 })
 
             for (let i = 0; i < bs.length; i++) {
-                ctx = {...ctx, ...run(ctx, bs[i], before, after)}
+                const result = await run(ctx, bs[i], before, after)
+                ctx = {...ctx, ...result}
             }
-        })
-
+        }
         setContext(ctx)
     }
 

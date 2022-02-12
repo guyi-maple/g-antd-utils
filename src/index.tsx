@@ -6,15 +6,16 @@ import Container from "./Container";
 
 import GTable from "./Table";
 import ActionButton from "./Container/ActionsButton";
-import Bind from "./Container/Bind";
+import Fetch from "./Common/Fetch";
 
 ReactDOM.render(
   <React.StrictMode>
       <Container>
+          <ActionButton components={["fetch"]} text="测试" />
           <GTable datasource="datasource">
-              <ActionButton components={["fetch"]} text="测试" />
+              <Fetch url="http://127.0.0.1:4523/mock/629666/list" name="fetch-list" responseName="datasource" component="fetch" />
+              {/*<Bind component="fetch" after="fetch-list" name="converter-list" executor={async ctx => ({datasource: ctx.response, response: undefined})} />*/}
           </GTable>
-          <Bind component="fetch" name="fetch" executor={() => ({datasource: [{id: Math.random()}]})} />
       </Container>
   </React.StrictMode>,
   document.getElementById('root')

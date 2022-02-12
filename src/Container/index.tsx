@@ -49,7 +49,6 @@ const Container = (props: ContainerProps) => {
 
     const action = (componentNames: string[]) => {
         let ctx = {...context}
-
         componentNames.forEach(componentName => {
             const binding = bindings.filter(binding => binding.component === componentName)
 
@@ -73,28 +72,13 @@ const Container = (props: ContainerProps) => {
         setContext(ctx)
     }
 
-    const parse = (children: any): any => {
-        if (!children) {
-            return null
+    return React.Children.map(props.children, child => React.cloneElement(child, {
+        g: {
+            register: props.g?.register || register,
+            action: props.g?.action || action,
+            context: props.g?.context || context
         }
-        const handle = (child: any) => {
-            return React.cloneElement(child, {
-                g: {
-                    register: props.g?.register || register,
-                    action: props.g?.action || action,
-                    context: props.g?.context || context
-                }
-            }, parse(child.props?.children))
-        }
-
-        if (children instanceof Array) {
-            return React.Children.map(children,handle)
-        }
-
-        return handle(children)
-    }
-
-    return parse(props.children)
+    }, child.props.children))
 }
 
 export default Container

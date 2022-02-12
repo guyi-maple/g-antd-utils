@@ -2,11 +2,12 @@ import {Table} from "antd";
 import {ContainerOptionProps} from "../Container/types";
 import Component from "../Container/Component";
 import Container from "../Container";
-import Bind from "../Container/Bind";
-import ActionButton from "../Container/ActionsButton";
+import React from "react";
+import {getContextField} from "../Common/context";
 
 export interface GTableProps extends ContainerOptionProps {
     children?: any
+    datasource: string
 }
 
 const GTable = (props: GTableProps) => {
@@ -14,11 +15,10 @@ const GTable = (props: GTableProps) => {
         <Component name="fetch" />
         <Table
             pagination={false}
-            dataSource={props.g?.context.datasource}
+            dataSource={getContextField(props, props.datasource)}
             columns={[{dataIndex: 'id', title: 'ID'}]}
         />
-        <Bind component="fetch" name="fetch" executor={ctx => ({datasource: [...(ctx.datasource || []),{id: `生成 - ${Math.random()}`}]})} />
-        <ActionButton components={["test","fetch"]} text="测试" />
+        {props.children || null}
     </Container>
 }
 

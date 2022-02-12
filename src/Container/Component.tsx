@@ -10,7 +10,6 @@ const Component = (props: ComponentProps) => {
             }, 'component')
         }
     },[props])
-
     return props.children || null
 }
 

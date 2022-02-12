@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.min.css'
 import Container from "./Container";
-import Bind from "./Container/Bind";
-import Component from "./Container/Component";
 
 import GTable from "./Table";
+import ActionButton from "./Container/ActionsButton";
+import Bind from "./Container/Bind";
 
 ReactDOM.render(
   <React.StrictMode>
       <Container>
-          <Component name="test" />
-          <Bind component="test" name="one" before="san" executor={() => ({datasource: [{id: `1 - ${Math.random()}`}]})} />
-          <Bind component="test" name="two" after="san" executor={ctx => ({datasource: [...ctx.datasource, {id: `3 - ${Math.random()}`}]})} />
-          <Bind component="test" name="san" executor={ctx => ({datasource: [...ctx.datasource, {id: `2 - ${Math.random()}`}]})} />
-          <GTable />
+          <GTable datasource="datasource">
+              <ActionButton components={["fetch"]} text="测试" />
+          </GTable>
+          <Bind component="fetch" name="fetch" executor={() => ({datasource: [{id: Math.random()}]})} />
       </Container>
   </React.StrictMode>,
   document.getElementById('root')

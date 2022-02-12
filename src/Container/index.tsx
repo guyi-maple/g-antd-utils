@@ -27,11 +27,8 @@ const Container = (props: ContainerProps) => {
     }
 
     const uploadContext = (ctx: any) => {
-        const temp = {...context}
-        Object.keys(ctx).forEach(key => {
-            // @ts-ignore
-            temp[key] = ctx[key]
-        })
+        const temp = {...context} as any
+        Object.keys(ctx).forEach(key => temp[key] = ctx[key])
         setContext(temp)
     }
 
@@ -89,6 +86,7 @@ const Container = (props: ContainerProps) => {
         g: {
             register: props.g?.register || register,
             action: props.g?.action || action,
+            uploadContext: props.g?.uploadContext || uploadContext,
             context: props.g?.context || context
         }
     }, child.props.children))

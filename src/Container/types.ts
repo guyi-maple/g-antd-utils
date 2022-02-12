@@ -18,11 +18,16 @@ export interface RegisterFunction {
     (value: ContainerComponent | ContainerBinding, type: RegisterType): void
 }
 
+export interface UploadContextFunction {
+    (value: any): void
+}
+
 export interface ContainerOptionProps {
     g?: {
         context: any
         action: ActionFunction
         register: RegisterFunction
+        uploadContext: UploadContextFunction
     }
 }
 

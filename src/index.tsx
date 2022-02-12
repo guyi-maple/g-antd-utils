@@ -5,21 +5,17 @@ import 'antd/dist/antd.min.css'
 import Container from "./Container";
 import Bind from "./Container/Bind";
 import Component from "./Container/Component";
-import ActionButton from "./Container/ActionsButton";
-import Action from "./Container/Action";
 
-import {BorderOuterOutlined} from '@ant-design/icons'
+import GTable from "./Table";
 
 ReactDOM.render(
   <React.StrictMode>
       <Container>
           <Component name="test" />
-          <Bind component="test" name="one" before="san" executor={() => ({name: Math.random()})} />
-          <Bind component="test" name="two" after="san" executor={() => ({text: Math.random()})} />
-          <Bind component="test" name="san" executor={() => ({over: Math.random()})} />
-          <Action>
-              <ActionButton component="test" icon={<BorderOuterOutlined />} />
-          </Action>
+          <Bind component="test" name="one" before="san" executor={() => ({datasource: [{id: `1 - ${Math.random()}`}]})} />
+          <Bind component="test" name="two" after="san" executor={ctx => ({datasource: [...ctx.datasource, {id: `3 - ${Math.random()}`}]})} />
+          <Bind component="test" name="san" executor={ctx => ({datasource: [...ctx.datasource, {id: `2 - ${Math.random()}`}]})} />
+          <GTable />
       </Container>
   </React.StrictMode>,
   document.getElementById('root')

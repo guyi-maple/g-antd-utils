@@ -4,8 +4,8 @@ import {useEffect} from "react";
 const Bind = (props: BindProps) => {
 
     useEffect(() => {
-        if (props.register) {
-            props.register({
+        if (props.g?.register) {
+            props.g?.register({
                 after: props.after,
                 before: props.before,
                 name: props.name,

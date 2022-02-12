@@ -1,7 +1,3 @@
-export interface ContainerProps {
-    children?: any
-}
-
 export interface ContainerComponent {
     name: string
 }
@@ -14,21 +10,34 @@ export interface ContainerBinding {
     executor: (context: any) => any
 }
 
-export type RegisterType = 'component' | 'binding'
-
-export interface RegisterProps {
-    register?: (value: ContainerComponent | ContainerBinding, type: RegisterType) => void
+export interface ActionFunction {
+    (componentNames: string[]): void
 }
 
-export interface ComponentProps extends RegisterProps {
+export interface RegisterFunction {
+    (value: ContainerComponent | ContainerBinding, type: RegisterType): void
+}
+
+export interface ContainerOptionProps {
+    g?: {
+        context: any
+        action: ActionFunction
+        register: RegisterFunction
+    }
+}
+
+
+export interface ContainerProps extends ContainerOptionProps{
+    children: any
+}
+
+export type RegisterType = 'component' | 'binding'
+
+export interface ComponentProps extends ContainerOptionProps {
     name: string
     children?: any
 }
 
-export interface BindProps extends ContainerBinding, RegisterProps {
+export interface BindProps extends ContainerBinding, ContainerOptionProps {
 
-}
-
-export interface ActionProps {
-    action?: (component: string) => void
 }

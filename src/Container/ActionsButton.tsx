@@ -1,23 +1,19 @@
-import {ActionProps} from "./types";
+import {ContainerOptionProps} from "./types";
 import {Button, ButtonProps} from "antd";
 
-export interface ActionsButtonProps extends ActionProps,ButtonProps {
-    component: string
+export interface ActionsButtonProps extends ContainerOptionProps,ButtonProps {
+    components: string[]
     text?: string
 }
 
 const ActionButton = (props: ActionsButtonProps) => {
 
-    const p = {...props}
-    p.action = undefined
-
     const onClick = () => {
-      if (props.action) {
-          props.action(props.component)
+      if (props.g?.action) {
+          props.g?.action(props.components)
       }
     }
-
-    return <Button {...p} onClick={onClick}>{props.text}</Button>
+    return <Button {...props} onClick={onClick}>{props.text}</Button>
 }
 
 export default ActionButton

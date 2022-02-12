@@ -4,8 +4,8 @@ import {useEffect} from "react";
 const Component = (props: ComponentProps) => {
 
     useEffect(() => {
-        if (props.register) {
-            props.register({
+        if (props.g?.register) {
+            props.g?.register({
                 name: props.name
             }, 'component')
         }

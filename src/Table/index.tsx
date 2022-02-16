@@ -15,27 +15,20 @@ export interface GTableProps extends ContainerOptionProps {
     children?: any
     datasource?: string
     page?: string
+    loading?: string
 }
 
 const GTable = (props: GTableProps) => {
 
-    const page = props.g?.context[props.page || 'page'] as TablePagination || {current: 1, size: 10}
-
+    const loading = (props.loading && props.g?.context[props.loading] === true) as boolean
     return <Container {...props}>
         <Component name="fetch" />
         <Table
             pagination={false}
-            loading={props.g?.context.loading}
+            loading={loading}
             dataSource={getContextField(props, props.datasource || 'datasource')}
             columns={[{dataIndex: 'id', title: 'ID'}]}
         />
-        <div style={{paddingTop: 16, textAlign: 'right'}}>
-            <Pagination
-                current={page.current}
-                pageSize={page.size}
-                total={page.size}
-            />
-        </div>
         {props.children || null}
     </Container>
 }

@@ -2,25 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.min.css'
-import Container from "./Container";
-
-import GTable from "./Table";
-import ActionButton from "./Container/ActionsButton";
-import Fetch from "./Common/Fetch";
 import {Chinese} from "./Common";
-import {RangeTime} from "./Query/Time";
+import Test from "./Test";
 
 ReactDOM.render(
   <React.StrictMode>
       <Chinese>
-          <Container>
-              <RangeTime start="startTime" end="endTime" />
-              <ActionButton components={["fetch"]} text="测试" />
-              <GTable datasource="datasource">
-                  <Fetch url="/list" name="fetch-list" responseName="datasource" component="fetch" />
-                  {/*<Bind component="fetch" after="fetch-list" name="converter-list" executor={async ctx => ({datasource: ctx.response, response: undefined})} />*/}
-              </GTable>
-          </Container>
+          <Test />
       </Chinese>
   </React.StrictMode>,
   document.getElementById('root')

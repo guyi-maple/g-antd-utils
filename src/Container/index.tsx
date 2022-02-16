@@ -1,12 +1,13 @@
 import {ContainerBinding, ContainerComponent, ContainerProps, RegisterType} from "./types";
-import React, {useState} from "react";
+import React, {Attributes, HTMLAttributes, useState} from "react";
+import {Spin} from "antd";
 
 const Container = (props: ContainerProps) => {
 
     const components = [] as ContainerComponent[]
     const bindings = [] as ContainerBinding[]
 
-    const [context, setContext] = useState({})
+    const [context, setContext] = useState<any>({})
 
     const register = (value: any, type: RegisterType) => {
         if (type === 'component') {
@@ -38,17 +39,26 @@ const Container = (props: ContainerProps) => {
             const bs = before[binding.name]
             for (let i = 0; i < bs.length; i++) {
                 const result = await run(temp, bs[i], before, after)
+                if (result === false) {
+                    return false
+                }
                 temp = {...temp, ...result}
             }
         }
 
-
-        temp = {...temp, ...(await binding.executor(temp, uploadContext) || {})}
+        const result = await binding.executor(temp, uploadContext)
+        if (result === false) {
+            return false
+        }
+        temp = {...temp, ...(result || {})}
 
         if (after[binding.name]) {
             const as = after[binding.name]
             for (let i = 0; i < as.length; i++) {
                 const result = await run(temp, as[i], before, after)
+                if (result === false) {
+                    return false
+                }
                 temp = {...temp, ...result}
             }
         }
@@ -56,8 +66,8 @@ const Container = (props: ContainerProps) => {
         return temp
     }
 
-    const action = async (componentNames: string[]) => {
-        let ctx = {...context}
+    const action = async (componentNames: string[], data?: any) => {
+        let ctx = {...context, ...(data || {})}
         for (let i = 0; i < componentNames.length; i++) {
             const componentName = componentNames[i]
             const binding = bindings.filter(binding => binding.component === componentName)
@@ -76,20 +86,40 @@ const Container = (props: ContainerProps) => {
 
             for (let i = 0; i < bs.length; i++) {
                 const result = await run(ctx, bs[i], before, after)
+                if (result === false) {
+                    return false
+                }
                 ctx = {...ctx, ...result}
             }
         }
         setContext(ctx)
     }
 
-    return React.Children.map(props.children, child => React.cloneElement(child, {
-        g: {
-            register: props.g?.register || register,
-            action: props.g?.action || action,
-            uploadContext: props.g?.uploadContext || uploadContext,
-            context: props.g?.context || context
+    // @ts-ignore
+    const parse = (children: any) => {
+        if (!children) {
+            return null
         }
-    }, child.props.children))
+        return React.Children.map(children, child => {
+            if (!React.isValidElement(child)) {
+                return child
+            }
+            return React.cloneElement(child, {
+                // @ts-ignore
+                g: {
+                    register: props.g?.register || register,
+                    action: props.g?.action || action,
+                    uploadContext: props.g?.uploadContext || uploadContext,
+                    context: props.g?.context || context
+                }
+                // @ts-ignore
+            }, parse(child.props.children))
+        })
+    }
+
+   const children = parse(props.children)
+
+    return props.loading ? <Spin spinning={context[props.loading] === true}>{children}</Spin> : children
 }
 
 export default Container

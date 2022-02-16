@@ -1,6 +1,7 @@
 import Container from "../Container";
 import Bind from "../Container/Bind";
 import {response} from "./response";
+import qs from 'qs';
 import request from 'umi-request';
 
 export type FetchMethod = "GET" | "POST"
@@ -8,8 +9,7 @@ export type FetchMethod = "GET" | "POST"
 export interface FetchProps {
     url: string
     name?: string
-    query?: any
-    queryName?: string
+    onFetch?: (ctx: any) => any
     responseName?: string
     loadingName?: string
     method?: FetchMethod
@@ -19,11 +19,17 @@ export interface FetchProps {
 const Fetch = (props: FetchProps) => {
 
     const fetch = (ctx: any, setContext: (ctx: any) => void) => new Promise(resolve => {
+        const method = props.method || 'GET'
+
+        let data = props.onFetch ? props.onFetch(ctx) : undefined
+        let url = props.url
+        if (method === 'GET') {
+            url = `${url}?${qs.stringify(data)}`
+            data = undefined
+        }
+
         response({
-            request: request(props.url, {
-                method: props.method || 'GET',
-                data: {...(props.query || {}), ...(props.queryName ? (ctx[props.queryName] || {}) : {})}
-            }),
+            request: request(url, {method, data}),
             onLoadingChange: loading => {
                 const data = {};
                 // @ts-ignore

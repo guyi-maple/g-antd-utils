@@ -2,7 +2,7 @@
   "name": "g-antd-utils",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:4523/mock/629666",
+  "proxy": "https://dark-moon-481967.postman.co/workspace/8916d4da-f2ff-4426-8c5d-4f6c1342bca7/mock/18f14bb2-a92c-433c-9be9-cef43abf9066",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@testing-library/jest-dom": "^5.16.2",
@@ -14,6 +14,8 @@
     "@types/react-dom": "^17.0.11",
     "antd": "^4.18.6",
     "http-proxy-middleware": "^2.0.3",
+    "moment": "^2.29.1",
+    "qs": "^6.10.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",

@@ -11,7 +11,7 @@ export interface ContainerBinding {
 }
 
 export interface ActionFunction {
-    (componentNames: string[]): Promise<any>
+    (componentNames: string[], data?: any): Promise<any>
 }
 
 export interface RegisterFunction {
@@ -34,6 +34,7 @@ export interface ContainerOptionProps {
 
 export interface ContainerProps extends ContainerOptionProps{
     children: any
+    loading?: string
 }
 
 export type RegisterType = 'component' | 'binding'

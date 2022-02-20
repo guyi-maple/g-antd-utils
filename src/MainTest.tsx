@@ -2,7 +2,7 @@ import GContainer, {useContainerContext, useContainerDispatch} from "./GContaine
 import {Button} from "antd";
 import Action from "./GContainer/Action";
 
-const ActionButton = (props: {action?: (name: string) => void}) => {
+const ActionButton = (props: {action?: (bind: string) => void}) => {
     // @ts-ignore
     return <Button onClick={() => props.action('test')}>action</Button>
 }

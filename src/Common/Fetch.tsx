@@ -3,6 +3,8 @@ import Bind from "../Container/Bind";
 import {response} from "./response";
 import qs from 'qs';
 import request from 'umi-request';
+import {useContainerDispatch} from "../GContainer";
+import {useEffect} from "react";
 
 export type FetchMethod = "GET" | "POST"
 
@@ -17,6 +19,8 @@ export interface FetchProps {
 }
 
 const Fetch = (props: FetchProps) => {
+
+    const dispatch = useContainerDispatch()
 
     const fetch = (ctx: any, setContext: (ctx: any) => void) => new Promise(resolve => {
         const method = props.method || 'GET'
@@ -43,6 +47,14 @@ const Fetch = (props: FetchProps) => {
             resolve(data)
         })
     })
+
+    useEffect(() => {
+        dispatch({
+            type: 'register'
+        })
+    }, [])
+
+    return <></>
 
     return <Container {...props}>
         <Bind

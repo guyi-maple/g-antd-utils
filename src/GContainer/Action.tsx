@@ -5,11 +5,11 @@ const Action = ({children}: any) => {
 
     const dispatch = useContainerDispatch()
 
-    const action = (name: string) => {
+    const action = (action: string) => {
         dispatch({
             type: 'action',
             payload: {
-                name,
+                action,
                 dispatch
             }
         })

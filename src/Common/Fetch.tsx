@@ -1,10 +1,7 @@
-import Container from "../Container";
-import Bind from "../Container/Bind";
 import {response} from "./response";
 import qs from 'qs';
 import request from 'umi-request';
-import {useContainerDispatch} from "../GContainer";
-import {useEffect} from "react";
+import Register from "../GContainer/Register";
 
 export type FetchMethod = "GET" | "POST"
 
@@ -15,14 +12,11 @@ export interface FetchProps {
     responseName?: string
     loadingName?: string
     method?: FetchMethod
-    component: string
 }
 
 const Fetch = (props: FetchProps) => {
 
-    const dispatch = useContainerDispatch()
-
-    const fetch = (ctx: any, setContext: (ctx: any) => void) => new Promise(resolve => {
+    const fetch = async (ctx: any, dispatch: any) => {
         const method = props.method || 'GET'
 
         let data = props.onFetch ? props.onFetch(ctx) : undefined
@@ -32,37 +26,24 @@ const Fetch = (props: FetchProps) => {
             data = undefined
         }
 
-        response({
+        const resp = await response({
             request: request(url, {method, data}),
             onLoadingChange: loading => {
-                const data = {};
-                // @ts-ignore
+                const data = {} as any;
                 data[props.loadingName || 'loading'] = loading
-                setContext(data)
+                dispatch({
+                    type: 'update',
+                    payload: data
+                })
             }
-        }).then(resp => {
-            const data = {}
-            // @ts-ignore
-            data[props.responseName || 'response'] = resp
-            resolve(data)
         })
-    })
+        const result = {} as any
+        result[props.responseName || 'response'] = resp
+        return result
+    }
 
-    useEffect(() => {
-        dispatch({
-            type: 'register'
-        })
-    }, [])
+    return <Register name={props.name || 'fetch'} action={props.name || 'fetch'} executor={fetch} />
 
-    return <></>
-
-    return <Container {...props}>
-        <Bind
-            component={props.component}
-            name={props.name || 'fetch'}
-            executor={fetch}
-        />
-    </Container>
 }
 
 export default Fetch

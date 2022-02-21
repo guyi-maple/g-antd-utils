@@ -7,7 +7,7 @@ export interface RegisterProps {
     before?: string
     after?: string
     order?: number
-    executor: (ctx: any) => Promise<any>
+    executor: (ctx: any, dispatch: any) => Promise<any>
 }
 
 const Register = (props: RegisterProps) => {

@@ -1,5 +1,5 @@
 import {Button, ButtonProps} from "antd";
-import {useContainerDispatch} from "./index";
+import {useContainerContext, useContainerDispatch} from "./index";
 
 export interface ActionButtonProps extends ButtonProps {
     action: string
@@ -7,16 +7,11 @@ export interface ActionButtonProps extends ButtonProps {
 
 const ActionButton = (props: ActionButtonProps) => {
 
+    const context = useContainerContext()
     const dispatch = useContainerDispatch()
 
     const onClick = () => {
-        dispatch({
-            type: 'action',
-            payload: {
-                action: props.action,
-                dispatch
-            }
-        })
+        context.action(props.action, context, dispatch)
     }
 
     return <Button {...props} onClick={onClick} />

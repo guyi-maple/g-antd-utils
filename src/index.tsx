@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.min.css'
 import {Chinese} from "./Common";
-import Test from "./Test";
+import MainTest from "./MainTest";
 
 ReactDOM.render(
   <React.StrictMode>
       <Chinese>
-          <Test />
+          <MainTest />
       </Chinese>
   </React.StrictMode>,
   document.getElementById('root')

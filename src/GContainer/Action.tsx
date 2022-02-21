@@ -1,18 +1,13 @@
 import React from "react";
-import {useContainerDispatch} from "./index";
+import {useContainerContext, useContainerDispatch} from "./index";
 
 const Action = ({children}: any) => {
 
+    const state = useContainerContext()
     const dispatch = useContainerDispatch()
 
     const action = (action: string) => {
-        dispatch({
-            type: 'action',
-            payload: {
-                action,
-                dispatch
-            }
-        })
+        state.action(action, state, dispatch)
     }
 
     return React.Children.map(children, child => {

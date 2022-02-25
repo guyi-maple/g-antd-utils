@@ -1,9 +1,9 @@
 import React from "react";
-import {useContainerContext, useContainerDispatch} from "./index";
+import {useContainerCustomerContext, useContainerDispatch} from "./index";
 
 const Action = ({children}: any) => {
 
-    const state = useContainerContext()
+    const state = useContainerCustomerContext()
     const dispatch = useContainerDispatch()
 
     const action = (action: string) => {

@@ -1,5 +1,6 @@
-import {useContainerDispatch} from "./index";
+import {Component, useContainerDispatch} from "./index";
 import {useEffect} from "react";
+import {registerComponent} from "./dispatch";
 
 export interface RegisterProps {
     name: string
@@ -15,13 +16,7 @@ const Register = (props: RegisterProps) => {
     const dispatch = useContainerDispatch()
 
     useEffect(() => {
-        dispatch({
-            type: 'register',
-            payload: {
-                ...props,
-                order: props.order || 0
-            }
-        })
+        registerComponent(dispatch, {...props, order: props.order || 0} as Component)
     }, [])
 
     return <></>

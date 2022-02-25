@@ -1,25 +1,23 @@
-import {Table, Spin} from "antd";
-import {useContainerContext} from "../GContainer";
+import {Spin} from "antd";
+import GContainer from "../GContainer";
 import {ColumnType} from "antd/es/table";
+import React from "react";
+import TableContainer from "./TableContainer";
 
 export interface GTableProps {
-    children?: any
-    datasource: (ctx: any) => any[]
     columns: ColumnType<any>[]
-    loading?: (ctx: any) => boolean
+    children?: any
+    datasource?: any[]
+    loading?: boolean
 }
 
 const GTable = (props: GTableProps) => {
 
-    const state = useContainerContext()
-
-    return <Spin spinning={props.loading && props.loading(state)}>
-        <Table
-            pagination={false}
-            columns={props.columns}
-            dataSource={props.datasource(state)}
-        />
-        {props.children}
+    return <Spin spinning={props.loading === true}>
+        <GContainer defaultCustomer={{columns: props.columns}}>
+            <TableContainer datasource={props.datasource} />
+            {props.children}
+        </GContainer>
     </Spin>
 }
 

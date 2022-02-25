@@ -2,7 +2,7 @@ import {response} from "./response";
 import qs from 'qs';
 import request from 'umi-request';
 import Register from "../GContainer/Register";
-import {updateContext} from "./dispatch";
+import {updateContext} from "../GContainer/dispatch";
 
 export type FetchMethod = "GET" | "POST"
 
